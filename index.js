@@ -1,7 +1,11 @@
 var cheerio = require('cheerio');
 
 
-exports = module.exports = convert;
+exports = module.exports = function(ops) {
+	return convert(ops).html();
+};
+
+exports.asDOM = convert;
 
 var format = exports.format = {
 
@@ -131,7 +135,7 @@ function convert(ops) {
 		}
 	}
 
-	return $.html();
+	return $;
 
 	function applyStyles(attrs, next) {
 
