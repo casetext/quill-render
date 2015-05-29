@@ -1,0 +1,33 @@
+{
+  "name": "quill-render",
+  "version": "1.0.0",
+  "description": "Renders quilljs deltas into HTML",
+  "main": "index.js",
+  "dependencies": {
+    "cheerio": "^0.19.0"
+  },
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "mocha": "^2.2.5"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/casetext/quill-render.git"
+  },
+  "keywords": [
+    "quill",
+    "quilljs",
+    "render",
+    "html",
+    "transform"
+  ],
+  "author": "daguej",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/casetext/quill-render/issues"
+  },
+  "homepage": "https://github.com/casetext/quill-render#readme"
+}
