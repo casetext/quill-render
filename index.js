@@ -1,20 +1,15 @@
-var fs = require('fs'),
-	cheerio = require('cheerio');
+var cheerio = require('cheerio');
 
 
+exports = module.exports = convert;
 
-var format = {
+var format = exports.format = {
 
 	block: {
 		image: function($, src) {
 			var img = $('<img>');
 			img.attr('src', src);
 			this.append(img);
-		},
-		pdf: function($, src) {
-			var embed = $('<iframe>');
-			embed.attr('src', 'https://docs.google.com/gview?embedded=true&url=' + encodeURIComponent(src));
-			this.append(embed);
 		}
 	},
 
@@ -39,9 +34,6 @@ var format = {
 		},
 		h3: function() {
 			this[0].name = 'h3';
-		},
-		blockquote: function() {
-			this[0].name = 'blockquote';
 		},
 		bullet: {
 			group: function($) {
@@ -129,7 +121,6 @@ function convert(ops) {
 						group = null;
 					}
 					applyStyles(op.attributes, ops[i+1] && ops[i+1].attributes);
-					console.log(lines[j]);
 					el.append(lines[j]);
 					if (j < lines.length-1) {
 						newLine();
@@ -153,10 +144,8 @@ function convert(ops) {
 				if (activeInline[k]) {
 					if (activeInline[k] != attrs[k]) {
 						// ie when two links abut
-						console.log('abut');
 
 					} else {
-						console.log('nada');
 						continue; // do nothing -- we should already be inside this style's tag
 					}
 				}
@@ -173,19 +162,15 @@ function convert(ops) {
 
 		for (var k in activeInline) {
 			if (!attrs[k]) {
-				console.log(el[0].name, '->', el.parent()[0].name);
 				el = el.parent();
 				delete activeInline[k];
 			}
 		}
 
-		console.log(first, then);
-
 		first.forEach(apply);
 		then.forEach(apply);
 
 		function apply(fmt) {
-			console.log('apply', fmt);
 			var newEl = format.inline[fmt].call(null, $, attrs[fmt]);
 			el.append(newEl);
 			el = newEl;
@@ -206,12 +191,4 @@ function isLinifyable(attrs) {
 
 
 
-
-
-
-var html = convert(require('./doc.json').ops);
-
-fs.writeFileSync('out.html', html);
-
-console.log('ok');
 
