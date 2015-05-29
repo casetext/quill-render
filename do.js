@@ -1,11 +1,5 @@
-var //quilljsRenderer = require('quilljs-renderer'),
-	fs = require('fs'),
+var fs = require('fs'),
 	cheerio = require('cheerio');
-
-// quilljsRenderer.loadFormat('html');
-
-// var doc = new quilljsRenderer.Document(require('./doc.json').ops);
-
 
 
 
@@ -19,7 +13,7 @@ var format = {
 		},
 		pdf: function($, src) {
 			var embed = $('<iframe>');
-			embed.attr('src', src);
+			embed.attr('src', 'https://docs.google.com/gview?embedded=true&url=' + encodeURIComponent(src));
 			this.append(embed);
 		}
 	},
