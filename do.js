@@ -49,18 +49,28 @@ var format = {
 		blockquote: function() {
 			this[0].name = 'blockquote';
 		},
-		bullet: function() {
-			this[0].name = 'li';
+		bullet: {
+			group: function($) {
+				return $('<ul>');
+			},
+			line: function() {
+				this[0].name = 'li';
+			}
 		},
-		list: function() {
-			this[0].name = 'li';
+		list: {
+			group: function($) {
+				return $('<ol>');
+			},
+			line: function() {
+				this[0].name = 'li';
+			}
 		}
 	}
 
 };
 
 function convert(ops) {
-	var $ = cheerio.load(''), line, el, activeInline;
+	var $ = cheerio.load(''), group, line, el, activeInline;
 
 	function newLine() {
 		el = line = $('<p>');
@@ -89,7 +99,29 @@ function convert(ops) {
 				for (var j = 1; j < lines.length; j++) {
 					for (var k in op.attributes) {
 						if (format.lineify[k]) {
-							format.lineify[k].call(line, $, op.attributes[k]);
+
+							var fn = format.lineify[k];
+							if (typeof fn == 'object') {
+								if (group && group.type != k) {
+									group = null;
+								}
+								if (!group && fn.group) {
+									group = {
+										el: fn.group($),
+										type: k,
+										distance: 0
+									};
+									$.root().append(group.el);
+								}
+
+								if (group) {
+									group.el.append(line);
+									group.distance = 0;
+								}
+								fn = fn.line;
+							}
+
+							fn.call(line, $, op.attributes[k]);
 							newLine();
 							break;
 						}
@@ -99,6 +131,9 @@ function convert(ops) {
 			} else {
 
 				for (var j = 0; j < lines.length; j++) {
+					if (group && ++group.distance >= 2) {
+						group = null;
+					}
 					applyStyles(op.attributes, ops[i+1] && ops[i+1].attributes);
 					console.log(lines[j]);
 					el.append(lines[j]);
