@@ -121,7 +121,7 @@ function convert(ops) {
 			} else {
 
 				for (var j = 0; j < lines.length; j++) {
-					if (group && ++group.distance >= 2) {
+					if (j > 0 && group && ++group.distance >= 2) {
 						group = null;
 					}
 					applyStyles(op.attributes, ops[i+1] && ops[i+1].attributes);
