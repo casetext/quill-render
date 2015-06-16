@@ -55,42 +55,42 @@ describe('quill-render', function() {
 
 	});
 
-  it('renders lists correctly', function() {
+	it('renders lists correctly', function() {
 
-    expect(render([
-      {
-        "attributes": {
-          "italic": true
-      },
-        "insert": "Glenn v. Brumby"
-      },
-      {
-        "insert": ", 663 F.3d 1312 (11th Cir. 2011)"
-      },
-      {
-        "attributes": {
-          "list": true
-        },
-        "insert": "\n"
-      },
-      {
-        "attributes": {
-          "italic": true
-        },
-        "insert": "Barnes v. City of Cincinnati"
-      },
-      {
-        "insert": ", 401 F.3d 729 (6th Cir. 2005)"
-      },
-      {
-        "attributes": {
-          "list": true
-        },
-        "insert": "\n"
-      }
-    ]))
-    .to.equal('<ol><li><i>Glenn v. Brumby</i>, 663 F.3d 1312 (11th Cir. 2011)</li><li><i>Barnes v. City of Cincinnati</i>, 401 F.3d 729 (6th Cir. 2005)</li></ol><p></p>');
+		expect(render([
+			{
+				"attributes": {
+					"italic": true
+				},
+				"insert": "Glenn v. Brumby"
+			},
+			{
+				"insert": ", 663 F.3d 1312 (11th Cir. 2011)"
+			},
+			{
+				"attributes": {
+					"list": true
+				},
+				"insert": "\n"
+			},
+			{
+				"attributes": {
+					"italic": true
+				},
+				"insert": "Barnes v. City of Cincinnati"
+			},
+			{
+				"insert": ", 401 F.3d 729 (6th Cir. 2005)"
+			},
+			{
+				"attributes": {
+					"list": true
+				},
+				"insert": "\n"
+			}
+		]))
+		.to.equal('<ol><li><i>Glenn v. Brumby</i>, 663 F.3d 1312 (11th Cir. 2011)</li><li><i>Barnes v. City of Cincinnati</i>, 401 F.3d 729 (6th Cir. 2005)</li></ol><p></p>');
 
-  });
+	});
 
 });
