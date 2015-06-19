@@ -60,7 +60,7 @@ var format = exports.format = {
 };
 
 function convert(ops) {
-	var $ = cheerio.load(''), group, line, el, activeInline;
+	var $ = cheerio.load(''), group, line, el, activeInline, beginningOfLine;
 
 	function newLine() {
 		el = line = $('<p>');
@@ -117,11 +117,11 @@ function convert(ops) {
 						}
 					}
 				}
+				beginningOfLine = true;
 
 			} else {
-
 				for (var j = 0; j < lines.length; j++) {
-					if (j > 0 && group && ++group.distance >= 2) {
+					if ((j > 0 || beginningOfLine) && group && ++group.distance >= 2) {
 						group = null;
 					}
 					applyStyles(op.attributes, ops[i+1] && ops[i+1].attributes);
@@ -130,6 +130,7 @@ function convert(ops) {
 						newLine();
 					}
 				}
+				beginningOfLine = false;
 
 			}
 		}
