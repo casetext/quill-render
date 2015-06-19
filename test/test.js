@@ -55,7 +55,7 @@ describe('quill-render', function() {
 
 	});
 
-	it('renders lists correctly', function() {
+	it('renders lists with inline formats correctly', function() {
 
 		expect(render([
 			{
@@ -90,6 +90,69 @@ describe('quill-render', function() {
 			}
 		]))
 		.to.equal('<ol><li><i>Glenn v. Brumby</i>, 663 F.3d 1312 (11th Cir. 2011)</li><li><i>Barnes v. City of Cincinnati</i>, 401 F.3d 729 (6th Cir. 2005)</li></ol><p></p>');
+
+	});
+
+
+	it('renders adjacent lists correctly', function() {
+
+		expect(render([
+			{
+				"insert": "Item 1"
+			},
+			{
+				"insert": "\n",
+				"attributes": {
+					"list": true
+				}
+			},
+			{
+				"insert": "Item 2"
+			},
+			{
+				"insert": "\n",
+				"attributes": {
+					"list": true
+				}
+			},
+			{
+				"insert": "Item 3"
+			},
+			{
+				"insert": "\n",
+				"attributes": {
+					"list": true
+				}
+			},
+			{
+				"insert": "Intervening paragraph\nItem 4"
+			},
+			{
+				"insert": "\n",
+				"attributes": {
+					"list": true
+				}
+			},
+			{
+				"insert": "Item 5"
+			},
+			{
+				"insert": "\n",
+				"attributes": {
+					"list": true
+				}
+			},
+			{
+				"insert": "Item 6"
+			},
+			{
+				"insert": "\n",
+				"attributes": {
+					"list": true
+				}
+			}
+		]))
+		.to.equal('<ol><li>Item 1</li><li>Item 2</li><li>Item 3</li></ol><p>Intervening paragraph</p><ol><li>Item 4</li><li>Item 5</li><li>Item 6</li></ol><p></p>');
 
 	});
 
