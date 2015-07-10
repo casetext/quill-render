@@ -156,4 +156,29 @@ describe('quill-render', function() {
 
 	});
 
+	it('renders adjacent inline formats correctly', function() {
+		expect(render([
+			{
+				"attributes" : {
+					"italic" : true
+				},
+				"insert" : "Italics! "
+			},
+			{
+				"attributes": {
+					"italic": true,
+					"link": "http://example.com"
+				},
+				"insert": "Italic link"
+			},
+			{
+				"attributes": {
+					"link": "http://example.com"
+				},
+				"insert": " regular link"
+			}
+
+		]))
+		.to.equal('<p><i>Italics! <a href="http://example.com">Italic link</a></i><a href="http://example.com"> regular link</a></p>');
+	});
 });

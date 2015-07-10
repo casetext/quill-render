@@ -143,6 +143,19 @@ function convert(ops) {
 		var first = [], then = [];
 		attrs = attrs || {};
 
+		var tag = el, seen = {};
+		while (tag[0]._format) {
+			seen[tag[0]._format] = true;
+			if (!attrs[tag[0]._format]) {
+				for (var k in seen) {
+					delete activeInline[k];
+				}
+				el = tag.parent();
+			}
+
+			tag = tag.parent();
+		}
+
 		for (var k in attrs) {
 			if (format.inline[k]) {
 
@@ -165,18 +178,12 @@ function convert(ops) {
 			}
 		}
 
-		for (var k in activeInline) {
-			if (!attrs[k]) {
-				el = el.parent();
-				delete activeInline[k];
-			}
-		}
-
 		first.forEach(apply);
 		then.forEach(apply);
 
 		function apply(fmt) {
 			var newEl = format.inline[fmt].call(null, $, attrs[fmt]);
+			newEl[0]._format = fmt;
 			el.append(newEl);
 			el = newEl;
 		}
