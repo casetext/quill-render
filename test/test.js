@@ -181,4 +181,17 @@ describe('quill-render', function() {
 		]))
 		.to.equal('<p><i>Italics! <a href="http://example.com">Italic link</a></i><a href="http://example.com"> regular link</a></p>');
 	});
+
+	it('handles multi-block inserts', function() {
+		expect(render([
+		{
+			"attributes": {
+				"image": "https://placekitten.com/g/200/300",
+				"link": "http://example.com"
+			},
+			"insert": 1
+		}
+		]))
+		.to.equal('<p><a href="http://example.com"><img src="https://placekitten.com/g/200/300"></a></p>');
+	});
 });
