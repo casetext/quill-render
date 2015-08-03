@@ -1,6 +1,6 @@
 {
   "name": "quill-render",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Renders quilljs deltas into HTML",
   "main": "index.js",
   "dependencies": {

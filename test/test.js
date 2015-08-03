@@ -182,7 +182,7 @@ describe('quill-render', function() {
 		.to.equal('<p><i>Italics! <a href="http://example.com">Italic link</a></i><a href="http://example.com"> regular link</a></p>');
 	});
 
-	it('handles multi-block inserts', function() {
+	it('handles block inserts with inline styles', function() {
 		expect(render([
 		{
 			"attributes": {
@@ -192,6 +192,6 @@ describe('quill-render', function() {
 			"insert": 1
 		}
 		]))
-		.to.equal('<p><a href="http://example.com"><img src="https://placekitten.com/g/200/300"></a></p>');
+		.to.equal('<p></p><p><a href="http://example.com"><img src="https://placekitten.com/g/200/300"></a></p><p></p>');
 	});
 });

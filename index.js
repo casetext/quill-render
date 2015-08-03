@@ -73,10 +73,12 @@ function convert(ops) {
 		var op = ops[i];
 		if (op.insert === 1) {
 			for (var k in op.attributes) {
-				newLine();
-				format.block[k].call(line, $, op.attributes[k]);
-				newLine();
-				activeInline = {};
+				if (format.block[k]) {
+					newLine();
+					applyStyles(op.attributes);
+					format.block[k].call(el, $, op.attributes[k]);
+					newLine();
+				}
 			}
 		} else {
 			var lines = op.insert.split('\n');
