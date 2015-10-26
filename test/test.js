@@ -194,4 +194,25 @@ describe('quill-render', function() {
 		]))
 		.to.equal('<p></p><p><a href="http://example.com"><img src="https://placekitten.com/g/200/300"></a></p><p></p>');
 	});
+
+	it('is XSS safe in regular text', function() {
+		expect(render([
+			{
+				"insert": '<img src=x onerror="doBadThings()">'
+			}
+		]))
+		.to.equal('<p>&lt;img src=x onerror=&quot;doBadThings()&quot;&gt;</p>');
+	});
+
+	it('is XSS safe in images', function() {
+		expect(render([
+			{
+				"attributes": {
+					"image": '"><img src=x onerror="doBadThings()">'
+				},
+				"insert": 1,
+			}
+		]))
+		.to.equal('<p></p><p><img src="&quot;&gt;&lt;img src=x onerror=&quot;doBadThings()&quot;&gt;"></p><p></p>');
+	});
 });

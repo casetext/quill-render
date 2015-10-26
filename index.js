@@ -1,4 +1,5 @@
-var cheerio = require('cheerio');
+var cheerio = require('cheerio'),
+	escapeHtml = require('escape-html');
 
 
 exports = module.exports = function(ops) {
@@ -81,7 +82,7 @@ function convert(ops) {
 				}
 			}
 		} else {
-			var lines = op.insert.split('\n');
+			var lines = escapeHtml(op.insert).split('\n');
 
 			if (isLinifyable(op.attributes)) {
 				// Some line-level styling (ie headings) is applied by inserting a \n
