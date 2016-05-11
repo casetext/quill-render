@@ -89,7 +89,7 @@ function convert(ops) {
 				// with the style; the style applies back to the previous \n.
 				// There *should* only be one style in an insert operation.
 
-				for (var j = 1; j < lines.length; j++) {
+				for (var j = 0; j < lines.length; j++) {
 					for (var k in op.attributes) {
 						if (format.lineify[k]) {
 
@@ -129,7 +129,7 @@ function convert(ops) {
 					}
 					applyStyles(op.attributes, ops[i+1] && ops[i+1].attributes);
 					el.append(lines[j]);
-					if (j < lines.length-1) {
+					if (j < lines.length-2) {
 						newLine();
 					}
 				}
