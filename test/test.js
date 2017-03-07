@@ -211,12 +211,6 @@ describe('quill-render', function() {
 
 		expect(render([
 			{
-				"insert": "text2\n\n"
-			}
-		])).to.equal('<p>text2</p><p></p>');
-
-		expect(render([
-			{
 				"insert": "text3"
 			},
 			{
@@ -229,5 +223,13 @@ describe('quill-render', function() {
 				"insert": "text4\n"
 			}
 		])).to.equal('<ol><li>text3</li></ol><p>text4</p>');
+	});
+
+	it('returns an extra empty <p> tag at the end if there is an extra newline', function() {
+		expect(render([
+			{
+				"insert": "text2\n\n"
+			}
+		])).to.equal('<p>text2</p><p></p>');
 	});
 });
