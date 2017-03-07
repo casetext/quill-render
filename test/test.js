@@ -34,7 +34,7 @@ describe('quill-render', function() {
 				"insert": 1
 			}
 		]))
-		.to.equal('<p>LOOK AT THE KITTEN!</p><p><img src="https://placekitten.com/g/200/300"></p><p></p>');
+		.to.equal('<p>LOOK AT THE KITTEN!</p><p><img src="https://placekitten.com/g/200/300"></p>');
 
 	});
 
@@ -51,7 +51,7 @@ describe('quill-render', function() {
 				"insert": "\n"
 			}
 		]))
-		.to.equal('<h1>Headline</h1><p></p>');
+		.to.equal('<h1>Headline</h1>');
 
 	});
 
@@ -89,7 +89,7 @@ describe('quill-render', function() {
 				"insert": "\n"
 			}
 		]))
-		.to.equal('<ol><li><i>Glenn v. Brumby</i>, 663 F.3d 1312 (11th Cir. 2011)</li><li><i>Barnes v. City of Cincinnati</i>, 401 F.3d 729 (6th Cir. 2005)</li></ol><p></p>');
+		.to.equal('<ol><li><i>Glenn v. Brumby</i>, 663 F.3d 1312 (11th Cir. 2011)</li><li><i>Barnes v. City of Cincinnati</i>, 401 F.3d 729 (6th Cir. 2005)</li></ol>');
 	});
 
 	it('renders adjacent ordered and bullet lists correctly', function() {
@@ -132,7 +132,7 @@ describe('quill-render', function() {
 				"insert": "\n"
 			}
 		]))
-		.to.equal('<ul><li>bullet 1</li><li>bullet 2</li></ul><ol><li>item 1</li><li>item 2</li></ol><p></p>');
+		.to.equal('<ul><li>bullet 1</li><li>bullet 2</li></ul><ol><li>item 1</li><li>item 2</li></ol>');
 
 	});
 
@@ -172,7 +172,7 @@ describe('quill-render', function() {
 			"insert": 1
 		}
 		]))
-		.to.equal('<p></p><p><a href="http://example.com"><img src="https://placekitten.com/g/200/300"></a></p><p></p>');
+		.to.equal('<p></p><p><a href="http://example.com"><img src="https://placekitten.com/g/200/300"></a></p>');
 	});
 
 	it('is XSS safe in regular text', function() {
@@ -193,6 +193,41 @@ describe('quill-render', function() {
 				"insert": 1,
 			}
 		]))
-		.to.equal('<p></p><p><img src="&quot;&gt;&lt;img src=x onerror=&quot;doBadThings()&quot;&gt;"></p><p></p>');
+		.to.equal('<p></p><p><img src="&quot;&gt;&lt;img src=x onerror=&quot;doBadThings()&quot;&gt;"></p>');
+	});
+
+	it('does not output an extra empty <p> tag at the end', function() {
+		expect(render([
+			{
+				"insert": "text"
+			}
+		])).to.equal('<p>text</p>');
+
+		expect(render([
+			{
+				"insert": "text\n"
+			}
+		])).to.equal('<p>text</p>');
+
+		expect(render([
+			{
+				"insert": "text2\n\n"
+			}
+		])).to.equal('<p>text2</p><p></p>');
+
+		expect(render([
+			{
+				"insert": "text3"
+			},
+			{
+				"attributes": {
+					"list": "ordered"
+				},
+				"insert": "\n"
+			},
+			{
+				"insert": "text4\n"
+			}
+		])).to.equal('<ol><li>text3</li></ol><p>text4</p>');
 	});
 });
