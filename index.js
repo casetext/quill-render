@@ -63,6 +63,7 @@ function convert(ops) {
 		$.root().append(line);
 		activeInline = {};
 	}
+
 	newLine();
 
 	for (var i = 0; i < ops.length; i++) {
@@ -125,14 +126,20 @@ function convert(ops) {
 					}
 					applyStyles(op.attributes, ops[i+1] && ops[i+1].attributes);
 					el.append(lines[j]);
+
 					if (j < lines.length-1) {
 						newLine();
 					}
 				}
 				beginningOfLine = false;
-
 			}
 		}
+	}
+
+	// remove last empty <p> element
+	var last = $.root().children().last();
+	if (last[0] && last[0].tagName === 'p' && last.text() === '') {
+		last.remove();
 	}
 
 	return $;
