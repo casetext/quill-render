@@ -34,7 +34,7 @@ describe('quill-render', function() {
 				"insert": 1
 			}
 		]))
-		.to.equal('<p>LOOK AT THE KITTEN!</p><p><img src="https://placekitten.com/g/200/300"></p><p></p>');
+		.to.equal('<p>LOOK AT THE KITTEN!</p><p><img src="https://placekitten.com/g/200/300"></p>');
 
 	});
 
@@ -51,7 +51,7 @@ describe('quill-render', function() {
 				"insert": "\n"
 			}
 		]))
-		.to.equal('<h1>Headline</h1><p></p>');
+		.to.equal('<h1>Headline</h1>');
 
 	});
 
@@ -69,7 +69,7 @@ describe('quill-render', function() {
 			},
 			{
 				"attributes": {
-					"list": true
+					"list": "ordered"
 				},
 				"insert": "\n"
 			},
@@ -84,75 +84,55 @@ describe('quill-render', function() {
 			},
 			{
 				"attributes": {
-					"list": true
+					"list": "ordered"
 				},
 				"insert": "\n"
 			}
 		]))
-		.to.equal('<ol><li><i>Glenn v. Brumby</i>, 663 F.3d 1312 (11th Cir. 2011)</li><li><i>Barnes v. City of Cincinnati</i>, 401 F.3d 729 (6th Cir. 2005)</li></ol><p></p>');
-
+		.to.equal('<ol><li><i>Glenn v. Brumby</i>, 663 F.3d 1312 (11th Cir. 2011)</li><li><i>Barnes v. City of Cincinnati</i>, 401 F.3d 729 (6th Cir. 2005)</li></ol>');
 	});
 
-
-	it('renders adjacent lists correctly', function() {
+	it('renders adjacent ordered and bullet lists correctly', function() {
 
 		expect(render([
 			{
-				"insert": "Item 1"
+				"insert": "bullet 1"
 			},
 			{
-				"insert": "\n",
 				"attributes": {
-					"list": true
-				}
+					"list": "bullet"
+				},
+				"insert": "\n"
 			},
 			{
-				"insert": "Item 2"
+				"insert": "bullet 2"
 			},
 			{
-				"insert": "\n",
 				"attributes": {
-					"list": true
-				}
+					"list": "bullet"
+				},
+				"insert": "\n"
 			},
 			{
-				"insert": "Item 3"
+				"insert": "item 1"
 			},
 			{
-				"insert": "\n",
 				"attributes": {
-					"list": true
-				}
+					"list": "ordered"
+				},
+				"insert": "\n"
 			},
 			{
-				"insert": "Intervening paragraph\nItem 4"
+				"insert": "item 2"
 			},
 			{
-				"insert": "\n",
 				"attributes": {
-					"list": true
-				}
-			},
-			{
-				"insert": "Item 5"
-			},
-			{
-				"insert": "\n",
-				"attributes": {
-					"list": true
-				}
-			},
-			{
-				"insert": "Item 6"
-			},
-			{
-				"insert": "\n",
-				"attributes": {
-					"list": true
-				}
+					"list": "ordered"
+				},
+				"insert": "\n"
 			}
 		]))
-		.to.equal('<ol><li>Item 1</li><li>Item 2</li><li>Item 3</li></ol><p>Intervening paragraph</p><ol><li>Item 4</li><li>Item 5</li><li>Item 6</li></ol><p></p>');
+		.to.equal('<ul><li>bullet 1</li><li>bullet 2</li></ul><ol><li>item 1</li><li>item 2</li></ol>');
 
 	});
 
@@ -192,7 +172,7 @@ describe('quill-render', function() {
 			"insert": 1
 		}
 		]))
-		.to.equal('<p></p><p><a href="http://example.com"><img src="https://placekitten.com/g/200/300"></a></p><p></p>');
+		.to.equal('<p></p><p><a href="http://example.com"><img src="https://placekitten.com/g/200/300"></a></p>');
 	});
 
 	it('is XSS safe in regular text', function() {
@@ -213,6 +193,43 @@ describe('quill-render', function() {
 				"insert": 1,
 			}
 		]))
-		.to.equal('<p></p><p><img src="&quot;&gt;&lt;img src=x onerror=&quot;doBadThings()&quot;&gt;"></p><p></p>');
+		.to.equal('<p></p><p><img src="&quot;&gt;&lt;img src=x onerror=&quot;doBadThings()&quot;&gt;"></p>');
+	});
+
+	it('does not output an extra empty <p> tag at the end', function() {
+		expect(render([
+			{
+				"insert": "text"
+			}
+		])).to.equal('<p>text</p>');
+
+		expect(render([
+			{
+				"insert": "text\n"
+			}
+		])).to.equal('<p>text</p>');
+
+		expect(render([
+			{
+				"insert": "text3"
+			},
+			{
+				"attributes": {
+					"list": "ordered"
+				},
+				"insert": "\n"
+			},
+			{
+				"insert": "text4\n"
+			}
+		])).to.equal('<ol><li>text3</li></ol><p>text4</p>');
+	});
+
+	it('returns an extra empty <p> tag at the end if there is an extra newline', function() {
+		expect(render([
+			{
+				"insert": "text2\n\n"
+			}
+		])).to.equal('<p>text2</p><p></p>');
 	});
 });

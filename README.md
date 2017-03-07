@@ -67,3 +67,8 @@ You can also specify a grouping tag.  When multiple lines with the same format a
         }
     };
 
+Compatibility
+-------------
+
+Version 1.x.x is compatible with Quill pre-1.0.0.
+Version 2.x.x is compatible with Quill JS 1.0.0+

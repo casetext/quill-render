@@ -40,16 +40,11 @@ var format = exports.format = {
 		h3: function() {
 			this[0].name = 'h3';
 		},
-		bullet: {
-			group: function($) {
-				return $('<ul>');
-			},
-			line: function() {
-				this[0].name = 'li';
-			}
-		},
 		list: {
-			group: function($) {
+			group: function($, formatValue) {
+				if (formatValue === 'bullet') {
+					return $('<ul>');
+				}
 				return $('<ol>');
 			},
 			line: function() {
@@ -68,6 +63,7 @@ function convert(ops) {
 		$.root().append(line);
 		activeInline = {};
 	}
+
 	newLine();
 
 	for (var i = 0; i < ops.length; i++) {
@@ -92,16 +88,17 @@ function convert(ops) {
 				for (var j = 1; j < lines.length; j++) {
 					for (var k in op.attributes) {
 						if (format.lineify[k]) {
-
 							var fn = format.lineify[k];
 							if (typeof fn == 'object') {
-								if (group && group.type != k) {
+								// change group if we have a different type or a different type value
+								if (group && (group.type !== k || group.formatValue !== op.attributes[k])) {
 									group = null;
 								}
 								if (!group && fn.group) {
 									group = {
-										el: fn.group($),
+										el: fn.group($, op.attributes[k]),
 										type: k,
+										formatValue: op.attributes[k],
 										distance: 0
 									};
 									$.root().append(group.el);
@@ -129,14 +126,20 @@ function convert(ops) {
 					}
 					applyStyles(op.attributes, ops[i+1] && ops[i+1].attributes);
 					el.append(lines[j]);
+
 					if (j < lines.length-1) {
 						newLine();
 					}
 				}
 				beginningOfLine = false;
-
 			}
 		}
+	}
+
+	// remove last empty <p> element
+	var last = $.root().children().last();
+	if (last[0] && last[0].tagName === 'p' && last.text() === '') {
+		last.remove();
 	}
 
 	return $;
@@ -203,7 +206,3 @@ function isLinifyable(attrs) {
 	}
 	return false;
 }
-
-
-
-
