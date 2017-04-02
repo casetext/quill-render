@@ -55,6 +55,31 @@ describe('quill-render', function() {
 
 	});
 
+	it('renders all heading levels', function() {
+		var i,
+			ops = [],
+			expectedElements = [];
+
+		// build ops to represent a line for each heading 1-6,
+		// and build expected output
+		for (i = 1; i <= 6; ++i) {
+			var tagName = "h" + i,
+				op = {
+					"attributes": {},
+					"insert": "\n"
+				};
+			op.attributes[tagName] = true;
+			ops.push({
+				"insert": "Heading"
+			});
+			ops.push(op);
+
+			expectedElements.push("<" + tagName + ">Heading</" + tagName + ">");
+		}
+
+		expect(render(ops)).to.equal(expectedElements.join(""));
+	});
+
 	it('renders lists with inline formats correctly', function() {
 
 		expect(render([

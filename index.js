@@ -40,6 +40,15 @@ var format = exports.format = {
 		h3: function() {
 			this[0].name = 'h3';
 		},
+		h4: function() {
+			this[0].name = 'h4';
+		},
+		h5: function() {
+			this[0].name = 'h5';
+		},
+		h6: function() {
+			this[0].name = 'h6';
+		},
 		list: {
 			group: function($, formatValue) {
 				if (formatValue === 'bullet') {
