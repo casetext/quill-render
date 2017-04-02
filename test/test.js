@@ -81,6 +81,39 @@ describe('quill-render', function() {
 		expect(render(ops)).to.equal(expectedElements.join(""));
 	});
 
+	it('does not render invalid heading levels', function() {
+		expect(render([
+			{
+				"insert": "Heading"
+			},
+			{
+				"attributes": {
+					"header": 0
+				},
+				"insert": "\n"
+			},
+			{
+				"insert": "Heading"
+			},
+			{
+				"attributes": {
+					"header": 7
+				},
+				"insert": "\n"
+			},
+			{
+				"insert": "Heading"
+			},
+			{
+				"attributes": {
+					"header": 8
+				},
+				"insert": "\n"
+			}
+		]))
+		.to.equal('<p>Heading</p><p>Heading</p><p>Heading</p>');
+	});
+
 	it('renders lists with inline formats correctly', function() {
 
 		expect(render([
