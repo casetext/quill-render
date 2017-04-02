@@ -46,7 +46,7 @@ describe('quill-render', function() {
 			},
 			{
 				"attributes": {
-					"h1": true
+					"header": 1
 				},
 				"insert": "\n"
 			}
@@ -63,16 +63,17 @@ describe('quill-render', function() {
 		// build ops to represent a line for each heading 1-6,
 		// and build expected output
 		for (i = 1; i <= 6; ++i) {
-			var tagName = "h" + i,
-				op = {
-					"attributes": {},
-					"insert": "\n"
-				};
-			op.attributes[tagName] = true;
+			var tagName = "h" + i;
+
 			ops.push({
 				"insert": "Heading"
 			});
-			ops.push(op);
+			ops.push({
+				"attributes": {
+					"header": i
+				},
+				"insert": "\n"
+			});
 
 			expectedElements.push("<" + tagName + ">Heading</" + tagName + ">");
 		}
