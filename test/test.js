@@ -46,13 +46,72 @@ describe('quill-render', function() {
 			},
 			{
 				"attributes": {
-					"h1": true
+					"header": 1
 				},
 				"insert": "\n"
 			}
 		]))
 		.to.equal('<h1>Headline</h1>');
 
+	});
+
+	it('renders all heading levels', function() {
+		var i,
+			ops = [],
+			expectedElements = [];
+
+		// build ops to represent a line for each heading 1-6,
+		// and build expected output
+		for (i = 1; i <= 6; ++i) {
+			var tagName = "h" + i;
+
+			ops.push({
+				"insert": "Heading"
+			});
+			ops.push({
+				"attributes": {
+					"header": i
+				},
+				"insert": "\n"
+			});
+
+			expectedElements.push("<" + tagName + ">Heading</" + tagName + ">");
+		}
+
+		expect(render(ops)).to.equal(expectedElements.join(""));
+	});
+
+	it('does not render invalid heading levels', function() {
+		expect(render([
+			{
+				"insert": "Heading"
+			},
+			{
+				"attributes": {
+					"header": 0
+				},
+				"insert": "\n"
+			},
+			{
+				"insert": "Heading"
+			},
+			{
+				"attributes": {
+					"header": 7
+				},
+				"insert": "\n"
+			},
+			{
+				"insert": "Heading"
+			},
+			{
+				"attributes": {
+					"header": 8
+				},
+				"insert": "\n"
+			}
+		]))
+		.to.equal('<p>Heading</p><p>Heading</p><p>Heading</p>');
 	});
 
 	it('renders lists with inline formats correctly', function() {

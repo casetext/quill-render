@@ -31,14 +31,10 @@ var format = exports.format = {
 	},
 
 	lineify: {
-		h1: function() {
-			this[0].name = 'h1';
-		},
-		h2: function() {
-			this[0].name = 'h2';
-		},
-		h3: function() {
-			this[0].name = 'h3';
+		header: function($, level) {
+			if (level > 0 && level < 7) {
+				this[0].name = 'h' + level;
+			}
 		},
 		list: {
 			group: function($, formatValue) {
