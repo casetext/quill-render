@@ -1,0 +1,19 @@
+name: 'Verify Branch'
+# Runs on all pull requests on all branches
+on:
+    pull_request:
+
+jobs:
+  run-tests:
+    name: Run Tests
+    steps:
+      - name: Checkout Branch
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: https://npm.pkg.github.com/
+      - name: Install Dependencies
+        run: npm install
+      - name: Unit Tests
+        run: npm test 

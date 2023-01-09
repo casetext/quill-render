@@ -1,0 +1,24 @@
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  on_merge:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Latest
+      uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16
+        registry-url: https://npm.pkg.github.com/ 
+    - name: Bump Version
+      run: |
+        npm run ci-version
+    - name: Push New Version
+      run: |
+        git config --global user.name "Automation"
+        git config --global user.email "webplatform@mydigitalspace.onmicrosoft.com"
+        git push origin master
