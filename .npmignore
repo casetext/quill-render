@@ -1,4 +1,2 @@
 .git
-Jenkinsfile
 test
-.travis.yml
