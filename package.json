@@ -4,17 +4,17 @@
   "description": "Renders quilljs deltas into HTML",
   "main": "index.js",
   "dependencies": {
-    "cheerio": "0.22.0",
+    "cheerio": "^1.0.0-rc.12",
     "escape-html": "1.0.3"
   },
   "devDependencies": {
-    "@buildcom/fergy-standard-version": "^1.0.0",
-    "chai": "2.3.0",
-    "cz-conventional-changelog": "2.1.0",
-    "mocha": "2.5.3"
+    "chai": "^4.3.7",
+    "cz-conventional-changelog": "^3.3.0",
+    "mocha": "^10.2.0",
+    "standard-version": "^9.5.0"
   },
   "scripts": {
-    "ci-version": "fergy-standard-version",
+    "ci-version": "standard-version",
     "test": "mocha"
   },
   "repository": {

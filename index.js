@@ -1,4 +1,4 @@
-var cheerio = require('cheerio'),
+var cheerio = require('cheerio/lib/slim'),
 	escapeHtml = require('escape-html');
 
 
@@ -52,7 +52,7 @@ var format = exports.format = {
 };
 
 function convert(ops) {
-	var $ = cheerio.load(''), group, line, el, activeInline, beginningOfLine;
+	var $ = cheerio.load('', null, false), group, line, el, activeInline, beginningOfLine;
 
 	function newLine() {
 		el = line = $('<p>');
