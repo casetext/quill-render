@@ -1,7 +1,6 @@
 quill-render
 ============
 
-
 Renders a sequence of [quill](http://quilljs.com/) insert-only deltas (operational transforms) into HTML with no browser dependencies.
 
 This is accomplished by using [cheerio](https://github.com/cheeriojs/cheerio) to build a DOM from the delta sequence.
