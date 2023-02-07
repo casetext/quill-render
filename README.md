@@ -1,7 +1,6 @@
 quill-render
 ============
 
-[![Build Status](https://travis-ci.org/casetext/quill-render.svg)](https://travis-ci.org/casetext/quill-render)
 
 Renders a sequence of [quill](http://quilljs.com/) insert-only deltas (operational transforms) into HTML with no browser dependencies.
 
